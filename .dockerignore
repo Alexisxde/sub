@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+dist
+.env*
+.git
+.gitignore
+.dockerignore
+README.md
+LICENSE
+Dockerfile
+compose.yaml
+docker-compose.yaml
+
+# Prisma
+generated
