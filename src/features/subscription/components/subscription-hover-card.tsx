@@ -156,12 +156,6 @@ export function SubscriptionHoverCard({
 									</motion.div>
 								))}
 							</motion.div>
-							<div className="mt-1 pt-2 border-t border-border/50 flex justify-between text-muted-foreground items-center">
-								<span className="text-sm font-medium text-right">Total</span>
-								<span className="text-sm font-semibold">
-									${subscriptions.reduce((acc, curr) => acc + curr.amount, 0).toFixed(2)}
-								</span>
-							</div>
 						</div>
 					</motion.div>
 				)}

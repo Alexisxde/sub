@@ -16,8 +16,8 @@ import { useServices } from "@/features/service/hooks/use-services"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2Icon } from "lucide-react"
 import { Controller, useForm, type SubmitHandler } from "react-hook-form"
-import useCreateSubscription from "../hooks/use-create-subscription"
 import { useSubscriptionCategory } from "../hooks/use-categories"
+import useCreateSubscription from "../hooks/use-create-subscription"
 import { useSubscriptionPaymentMethods } from "../hooks/use-payment-methods"
 import { subscriptionSchema, type SubscriptionFormValues } from "../schemas/subscription"
 
@@ -88,6 +88,7 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 				<Controller
 					name="amount"
 					control={control}
+					defaultValue={undefined}
 					render={({ field }) => (
 						<Input {...field} className="flex-1" label="Monto" placeholder="0.00" error={errors.amount?.message} />
 					)}

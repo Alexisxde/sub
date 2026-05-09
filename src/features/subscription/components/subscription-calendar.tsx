@@ -19,7 +19,7 @@ export default function SubscriptionCalendar() {
 
 	const month = currentDate.getMonth()
 	const year = currentDate.getFullYear()
-	const { data } = useSubscriptions({ month: month + 1, year })
+	const { data, isLoading } = useSubscriptions({ month: month + 1, year })
 
 	const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1))
 	const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1))
@@ -128,7 +128,11 @@ export default function SubscriptionCalendar() {
 			<HeaderCalendar
 				month={month}
 				year={year}
-				total={`$${totalAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+				total={
+					isLoading
+						? "$0.00"
+						: `$${totalAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+				}
 				prevMonth={prevMonth}
 				nextMonth={nextMonth}
 			/>
