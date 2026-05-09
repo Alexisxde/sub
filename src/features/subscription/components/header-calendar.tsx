@@ -28,8 +28,8 @@ type Props = {
 
 export default function HeaderCalendar({ month, year, total, prevMonth, nextMonth }: Props) {
 	return (
-		<header className="flex flex-col items-center gap-1 px-3 mb-2">
-			<div className="w-full flex items-center justify-end">
+		<header className="relative flex flex-col items-center gap-1 px-3 mb-2">
+			<div className="absolute w-full flex items-center justify-end">
 				<SubscriptionCreatePopover />
 			</div>
 			<h2 className="text-muted-foreground text-base font-medium tracking-tight">

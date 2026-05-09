@@ -3,7 +3,7 @@ import Button from "@/components/ui/button"
 import { Dock, DockAnchor } from "@/components/ui/dock"
 import { Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { ChartLine, HomeIcon, LayoutGrid, Wallet } from "lucide-react"
+import { ChartLine, HomeIcon, LayoutGrid, Tag } from "lucide-react"
 import { motion } from "motion/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -50,8 +50,8 @@ export function useSidebar() {
 const navItems = [
 	{ href: "/app", icon: <HomeIcon className="size-4 md:size-full" />, title: "Inicio" },
 	{ href: "/app/analytics", icon: <ChartLine className="size-4 md:size-full" />, title: "Estadisticas" },
-	{ href: "/app/categories", icon: <LayoutGrid className="size-4 md:size-full" />, title: "Categorías" },
-	{ href: "/app/accounts", icon: <Wallet className="size-4 md:size-full" />, title: "Cuentas" }
+	{ href: "/app/subscriptions", icon: <Tag className="size-4 md:size-full" />, title: "Suscripciones" },
+	{ href: "/app/categories", icon: <LayoutGrid className="size-4 md:size-full" />, title: "Categorías" }
 ]
 
 export default function Sidebar() {
@@ -73,7 +73,7 @@ export default function Sidebar() {
 	}
 
 	return (
-		<motion.aside initial={false} className="fixed left-0 top-0 z-2 md:flex h-dvh flex-col items-center py-8 hidden">
+		<motion.aside initial={false} className="z-2 md:flex h-dvh flex-col items-center py-8 hidden">
 			<nav className="flex w-full flex-1 flex-col justify-center gap-2 px-3">
 				{navItems.map((item) => (
 					<Link key={item.href} href={item.href} className="w-fit">

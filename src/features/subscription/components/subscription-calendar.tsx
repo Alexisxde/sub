@@ -30,7 +30,9 @@ export default function SubscriptionCalendar() {
 
 	const subscriptionsByDay = useMemo(() => {
 		if (!data) return {}
-		const map: Record<number, { sub: Subcription; type: "start" | "end"; amount: number }[]> = {}
+		const map: Record<number, { sub: Subcription; type: "start" | "end"; amount: number; isExpired?: boolean }[]> = {}
+		const today = new Date()
+		today.setHours(0, 0, 0, 0)
 
 		for (const sub of data) {
 			for (const h of sub.history) {
@@ -46,7 +48,8 @@ export default function SubscriptionCalendar() {
 				if (eDate.getUTCMonth() === month && eDate.getUTCFullYear() === year) {
 					const day = eDate.getUTCDate()
 					if (!map[day]) map[day] = []
-					map[day].push({ sub, type: "end", amount: h.amount })
+					const isExpired = eDate < today
+					map[day].push({ sub, type: "end", amount: h.amount, isExpired })
 				}
 			}
 		}
@@ -159,7 +162,8 @@ export default function SubscriptionCalendar() {
 							onMouseMove={handleMouseMove}
 							className={cn(
 								"rounded-full md:rounded-4xl relative flex flex-col p-4 bg-card transition-colors hover:bg-muted duration-200 ease-in-out h-full",
-								dayMonth !== "current" && "bg-muted/10 hover:bg-muted/10 text-muted-foreground/20"
+								dayMonth !== "current" && "bg-muted/10 hover:bg-muted/10 text-muted-foreground/20",
+								hoveredDay === day && dayMonth === "current" && "z-10 bg-primary/10 hover:bg-primary/10"
 							)}>
 							<span
 								className={cn(

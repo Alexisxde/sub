@@ -148,6 +148,8 @@ function PopoverContent({ children, className, ...props }: PopoverContentProps) 
 		return () => document.removeEventListener("keydown", handleKeyDown)
 	}, [context.isOpen, context.close])
 
+	if (typeof document === "undefined") return null
+
 	return createPortal(
 		<AnimatePresence initial={false} mode="popLayout">
 			{context.isOpen && (
@@ -166,7 +168,10 @@ function PopoverContent({ children, className, ...props }: PopoverContentProps) 
 						id={`popover-content-${context.uniqueId}`}
 						role="dialog"
 						aria-modal="true"
-						className={cn("fixed overflow-hidden bg-popover text-foreground shadow-lg p-8", className)}
+						className={cn(
+							"fixed overflow-hidden bg-popover border border-border/50 text-foreground shadow-lg p-8",
+							className
+						)}
 						initial="initial"
 						animate="animate"
 						exit="exit"

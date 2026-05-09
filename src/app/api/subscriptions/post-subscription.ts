@@ -15,13 +15,28 @@ export async function postSubscription(request: NextRequest) {
 	if (!success) return NextResponse.json({ error: z.flattenError(error) }, { status: BAD_REQUEST })
 
 	const { period, amount, note, startDate, serviceId, categoryId, paymentMethodId } = data
-	const endDate = new Date(startDate)
-	const originalDate = endDate.getDate()
-	if (period === "month") endDate.setMonth(endDate.getMonth() + 1)
-	if (period === "year") endDate.setFullYear(endDate.getFullYear() + 1)
-	if (endDate.getDate() !== originalDate) endDate.setDate(0)
 
 	try {
+		const existingSubscription = await prisma.historySubscription.findFirst({
+			where: {
+				startDate: new Date(startDate),
+				subscription: {
+					userId,
+					serviceId
+				}
+			}
+		})
+
+		if (existingSubscription) {
+			return NextResponse.json({ error: "Ya existe una suscripción para este servicio en este día." }, { status: BAD_REQUEST })
+		}
+
+		const endDate = new Date(startDate)
+		const originalDate = endDate.getDate()
+		if (period === "month") endDate.setMonth(endDate.getMonth() + 1)
+		if (period === "year") endDate.setFullYear(endDate.getFullYear() + 1)
+		if (endDate.getDate() !== originalDate) endDate.setDate(0)
+
 		const subscription = await prisma.subscription.create({
 			data: {
 				serviceId,
@@ -32,7 +47,7 @@ export async function postSubscription(request: NextRequest) {
 			select: { id: true, history: { select: { id: true } } }
 		})
 		return NextResponse.json(subscription, { status: CREATED })
-	} catch (_) {
+	} catch (error) {
 		return NextResponse.json({ error: "Internal Server Error" }, { status: INTERNAL_SERVER_ERROR })
 	}
 }

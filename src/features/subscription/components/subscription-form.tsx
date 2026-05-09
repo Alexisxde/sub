@@ -17,18 +17,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2Icon } from "lucide-react"
 import { Controller, useForm, type SubmitHandler } from "react-hook-form"
 import useCreateSubscription from "../hooks/use-create-subscription"
+import { useSubscriptionCategory } from "../hooks/use-categories"
+import { useSubscriptionPaymentMethods } from "../hooks/use-payment-methods"
 import { subscriptionSchema, type SubscriptionFormValues } from "../schemas/subscription"
 
 type Props = {
 	onOpenChange: (open: boolean) => void
 }
-
-const values = [
-	{ id: "7a071748-5872-4e13-b819-7dbfae516d10", name: "Streaming" },
-	{ id: "bcfd860b-4ed5-4ada-b718-ae0ff44aee7c", name: "IA" },
-	{ id: "7b6f6877-a88c-4f26-a441-066b53755416", name: "Software" },
-	{ id: "94bd74e9-2a10-4e82-a6f7-26da3527581f", name: "Otro" }
-]
 
 const period = [
 	{ id: "month", name: "Mes" },
@@ -37,6 +32,8 @@ const period = [
 
 export default function SubscriptionForm({ onOpenChange }: Props) {
 	const { mutateAsync } = useCreateSubscription()
+	const { data: paymentMethods } = useSubscriptionPaymentMethods()
+	const { data: categories = [] } = useSubscriptionCategory()
 	const {
 		handleSubmit,
 		reset,
@@ -53,7 +50,7 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 			startDate: "",
 			period: undefined,
 			notification: false,
-			paymentMethodId: "00a8ad90-0e87-4c1f-b6e5-052ad1189932",
+			paymentMethodId: "",
 			note: ""
 		}
 	})
@@ -87,12 +84,28 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 					/>
 				)}
 			/>
-			<Controller
-				name="amount"
-				control={control}
-				defaultValue=""
-				render={({ field }) => <Input {...field} label="Monto" placeholder="0.00" error={errors.amount?.message} />}
-			/>
+			<div className="flex items-start space-x-4">
+				<Controller
+					name="amount"
+					control={control}
+					render={({ field }) => (
+						<Input {...field} className="flex-1" label="Monto" placeholder="0.00" error={errors.amount?.message} />
+					)}
+				/>
+				<Controller
+					name="paymentMethodId"
+					control={control}
+					render={({ field }) => (
+						<SearchInput
+							{...field}
+							data={paymentMethods}
+							label="Método de Pago"
+							placeholder="Stripe, PayPal, etc."
+							error={errors.paymentMethodId?.message}
+						/>
+					)}
+				/>
+			</div>
 			<Controller
 				name="startDate"
 				control={control}
@@ -122,7 +135,7 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 							<SelectMessageError message={errors.categoryId?.message} />
 							<SelectContent>
 								<SelectGroup>
-									{values.map(({ id, name }) => (
+									{categories.map(({ id, name }) => (
 										<SelectItem key={id} value={id}>
 											{name}
 										</SelectItem>

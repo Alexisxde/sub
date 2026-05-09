@@ -7,9 +7,9 @@ export type SubscriptionPeriod = "month" | "year"
 export type PaymentMethod = {
 	id: string
 	name: string
-	cardNumber?: string
-	createdAt: string
-	isDeleted: boolean
+	logo: string | null
+	createdAt?: string
+	isDeleted?: boolean
 }
 
 export type Category = {
@@ -20,6 +20,7 @@ export type Category = {
 export type SubcriptionHistory = {
 	id: string
 	amount: number
+	paymentMethod: PaymentMethod
 	period: SubscriptionPeriod
 	note?: string
 	startDate: string

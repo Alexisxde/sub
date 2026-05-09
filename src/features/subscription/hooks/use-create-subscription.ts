@@ -13,15 +13,13 @@ export default function useCreateSubscription() {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: SUBCRIPTIONS })
 			sileo.success({
-				title: "Subscription created",
-				description: "Your subscription has been saved successfully."
+				title: "Suscripción creada",
+				description: "Tu suscripción ha sido guardada correctamente."
 			})
 		},
-		onError: (_error, _variables) => {
-			sileo.error({
-				title: "Error",
-				description: "Failed to create subscription. Please try again."
-			})
+		onError: (error: any) => {
+			const message = error.response?.data?.error || "Failed to create subscription. Please try again."
+			sileo.error({ title: "Error", description: message })
 		}
 	})
 }

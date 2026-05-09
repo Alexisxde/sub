@@ -15,7 +15,7 @@ type SearchInputProps = {
 	label?: string
 	error?: string
 	onClear?: () => void
-	data?: DataItem[]
+	data?: DataItem[] | []
 	onSelect?: (item: DataItem) => void
 } & ComponentPropsWithoutRef<"input">
 
@@ -147,7 +147,7 @@ export function SearchInput({
 										type="button"
 										key={item.id}
 										onClick={() => handleSelect(item)}
-										className="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors hover:bg-muted text-muted-foreground font-medium flex items-center gap-3">
+										className="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors hover:bg-muted text-muted-foreground font-medium flex items-center gap-2">
 										{item.logo && (
 											<div
 												className="[&_svg]:size-4 flex items-center justify-center"

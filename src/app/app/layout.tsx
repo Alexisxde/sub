@@ -3,9 +3,9 @@ import Sidebar, { SidebarProvider } from "@/components/sidebar"
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<SidebarProvider>
-			<div className="flex min-h-screen bg-background text-foreground">
+			<div className="flex gap-4 h-dvh">
 				<Sidebar />
-				<main className="flex-1 overflow-auto md:pl-40">{children}</main>
+				<main className="flex-1 overflow-auto">{children}</main>
 			</div>
 		</SidebarProvider>
 	)

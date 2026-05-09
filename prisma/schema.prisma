@@ -23,7 +23,6 @@ model User {
   avatarId       String?
   avatar         Avatar?
   categories     Category[]
-  paymentMethods PaymentMethod[]
   subscriptions  Subscription[]
 
   @@index([email])
@@ -62,13 +61,11 @@ model Service {
 model PaymentMethod {
   id            String                @id @default(uuid())
   name          String
-  cardNumber    String?
+  logo          String?
   createdAt     DateTime              @default(now())
   updatedAt     DateTime              @updatedAt
   isDeleted     Boolean               @default(false)
   subscriptions HistorySubscription[]
-  userId        String?
-  user          User?                 @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 
 model Subscription {
