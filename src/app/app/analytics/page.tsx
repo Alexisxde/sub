@@ -1,12 +1,5 @@
-import { EmptyState } from "@/components/empty-state"
+import { AnalyticsDashboard } from "@/features/analytics/components/analytics-dashboard"
 
 export default function AnalyticsPage() {
-	return (
-		<section className="relative min-h-dvh p-6 md:p-10 overflow-hidden">
-			<EmptyState
-				title="Estadísticas"
-				description="Próximamente podrás ver estadísticas detalladas de tus gastos y suscripciones."
-			/>
-		</section>
-	)
+	return <AnalyticsDashboard />
 }

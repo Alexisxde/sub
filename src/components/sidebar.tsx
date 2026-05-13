@@ -3,7 +3,7 @@ import Button from "@/components/ui/button"
 import { Dock, DockAnchor } from "@/components/ui/dock"
 import { Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { ChartLine, HomeIcon, LayoutGrid, Tag } from "lucide-react"
+import { ChartLine, HomeIcon, Tag } from "lucide-react"
 import { motion } from "motion/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -50,8 +50,7 @@ export function useSidebar() {
 const navItems = [
 	{ href: "/app", icon: <HomeIcon className="size-4 md:size-full" />, title: "Inicio" },
 	{ href: "/app/analytics", icon: <ChartLine className="size-4 md:size-full" />, title: "Estadisticas" },
-	{ href: "/app/subscriptions", icon: <Tag className="size-4 md:size-full" />, title: "Suscripciones" },
-	{ href: "/app/categories", icon: <LayoutGrid className="size-4 md:size-full" />, title: "Categorías" }
+	{ href: "/app/subscriptions", icon: <Tag className="size-4 md:size-full" />, title: "Suscripciones" }
 ]
 
 export default function Sidebar() {
