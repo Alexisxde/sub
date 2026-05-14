@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
-import { monthStringShort } from "@/utils/month-string"
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, UNAUTHORIZED } from "@/utils/http-code"
+import { monthStringShort } from "@/utils/month-string"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request) {
@@ -20,8 +20,6 @@ export async function GET(request: Request) {
 	if (Number.isNaN(m) || Number.isNaN(y))
 		return NextResponse.json({ error: "Mes y año deben ser números." }, { status: BAD_REQUEST })
 
-	// Calculate the start of the range (6 months ago)
-	// Selected month is inclusive as the end
 	const endDate = new Date(y, m + 1, 0, 23, 59, 59, 999)
 	const startDate = new Date(y, m - 5, 1)
 

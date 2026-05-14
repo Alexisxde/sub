@@ -2,6 +2,7 @@
 import { monthStringShort } from "@/utils/month-string"
 import { Receipt } from "lucide-react"
 import { motion } from "motion/react"
+import Link from "next/link"
 import { useAnalyticsSubscriptions } from "../hooks/use-analytics-subscriptions"
 import { CardEmptyState } from "./analytics-card-empty"
 
@@ -47,8 +48,12 @@ export default function AnalyticsCardServices({ month, year }: Props) {
 						))}
 					</section>
 					{data.length > 5 && (
-						<footer className="text-center text-[11px] text-muted-foreground -mt-2 underline">
-							+{data.length - 5} más
+						<footer className="flex items-center justify-center -mt-2">
+							<Link
+								href={`/app?month=${month}&year=${year}`}
+								className="text-center text-[11px] text-muted-foreground underline">
+								+{data.length - 5} más
+							</Link>
 						</footer>
 					)}
 				</>
