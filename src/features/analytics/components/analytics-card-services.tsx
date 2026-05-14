@@ -1,14 +1,22 @@
 "use client"
 import { useServices } from "@/features/service/hooks/use-services"
+import { monthStringShort } from "@/utils/month-string"
 import { Plus, Receipt } from "lucide-react"
+import { motion } from "motion/react"
 
-export default function AnalyticsCardServices() {
+type Props = { month: number; year: number }
+
+export default function AnalyticsCardServices({ month }: Props) {
 	const { data, isLoading } = useServices()
 
 	if (isLoading) return null
 
 	return (
-		<article className="flex flex-col rounded-4xl bg-card p-6 space-y-4 flex-1">
+		<motion.article
+			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
+			className="flex flex-col rounded-4xl bg-card p-6 space-y-4 flex-1">
 			<header className="flex items-center gap-2">
 				<Receipt className="size-5" />
 				<h3 className="text-primary font-medium text-base">Suscripciones</h3>
@@ -39,7 +47,7 @@ export default function AnalyticsCardServices() {
 								<div className="flex flex-col gap-1 border-r pr-4 border-border w-full">
 									<span className="text-sm font-medium leading-none text-foreground">{name}</span>
 									<span className="text-xs text-muted-foreground">
-										{idx + 9} May - {idx + 9} Jun
+										{idx + 9} {monthStringShort(month)} - {idx + 9} {monthStringShort(month + 1)}
 									</span>
 								</div>
 								<span className="w-20 text-left text-sm text-muted-foreground pr-2">${idx + 1}0.00/mes</span>
@@ -49,6 +57,6 @@ export default function AnalyticsCardServices() {
 					<footer className="text-center text-[11px] text-muted-foreground -mt-2 underline">+5 más</footer>
 				</>
 			)}
-		</article>
+		</motion.article>
 	)
 }

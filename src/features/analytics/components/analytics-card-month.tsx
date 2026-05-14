@@ -1,20 +1,24 @@
 "use client"
+import { monthStringShort } from "@/utils/month-string"
 import { Calendar1 } from "lucide-react"
+import { motion } from "motion/react"
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+
+type Props = { month: number; year: number }
 
 const BUDGET = 300
 
 const RAW_DATA = [
-	{ day: 1, actual: 10 },
-	{ day: 4, actual: 20 },
-	{ day: 8, actual: 10 },
-	{ day: 11, actual: 10 },
-	{ day: 15, actual: 80 },
-	{ day: 18, actual: 5 },
-	{ day: 22, actual: 40 },
-	{ day: 23, actual: 40 },
-	{ day: 25, actual: 100 },
-	{ day: 29, actual: 10 }
+	{ day: 1, actual: 30 },
+	{ day: 4, actual: 60 },
+	{ day: 8, actual: 30 },
+	{ day: 11, actual: 30 },
+	{ day: 15, actual: 250 },
+	{ day: 18, actual: 20 },
+	{ day: 22, actual: 120 },
+	{ day: 23, actual: 120 },
+	{ day: 25, actual: 300 },
+	{ day: 29, actual: 40 }
 ]
 
 const data = RAW_DATA.map((d) => ({
@@ -22,15 +26,14 @@ const data = RAW_DATA.map((d) => ({
 	target: Math.round((BUDGET / 30) * d.day * 100) / 100
 }))
 
-const MONTH = "May"
-
 interface CustomTooltipProps {
 	active?: boolean
 	payload?: Array<{ value: number; name: string }>
 	label?: string
+	month: number
 }
 
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+function CustomTooltip({ active, payload, label, month }: CustomTooltipProps) {
 	if (active && payload && payload.length) {
 		const actual = payload.find((p) => p.name === "actual")
 		if (!actual) return null
@@ -38,7 +41,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 		return (
 			<div className="flex items-center gap-1 rounded-lg bg-card px-3 py-2 shadow-md border border-border">
 				<p className="text-xs font-medium text-muted-foreground">
-					{MONTH} {label}:
+					{monthStringShort(month)} {label}:
 				</p>
 				<p className="text-xs font-semibold">${actual.value.toFixed(2)}</p>
 			</div>
@@ -47,9 +50,13 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 	return null
 }
 
-export default function AnalyticsCardMonth() {
+export default function AnalyticsCardMonth({ month }: Props) {
 	return (
-		<article className="rounded-4xl bg-card p-6 space-y-3 flex-1 min-h-53 h-fit max-h-71">
+		<motion.article
+			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
+			className="rounded-4xl bg-card p-6 space-y-3 flex-1 min-h-53 h-fit max-h-71">
 			<header className="flex items-center gap-2">
 				<Calendar1 className="size-5" />
 				<h3 className="text-primary font-medium text-base">Gastos del Mes</h3>
@@ -69,7 +76,7 @@ export default function AnalyticsCardMonth() {
 							tickLine={false}
 							axisLine={false}
 							tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
-							tickFormatter={(v) => `${MONTH} ${v}`}
+							tickFormatter={(v) => `${monthStringShort(month)} ${v}`}
 							interval={0}
 						/>
 						<YAxis
@@ -77,9 +84,9 @@ export default function AnalyticsCardMonth() {
 							axisLine={false}
 							tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
 							tickFormatter={(v) => `$${v}`}
-							width={52}
+							width={40}
 						/>
-						<Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
+						<Tooltip content={<CustomTooltip month={month} />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
 						<Area
 							type="monotone"
 							dataKey="actual"
@@ -92,6 +99,6 @@ export default function AnalyticsCardMonth() {
 					</AreaChart>
 				</ResponsiveContainer>
 			</section>
-		</article>
+		</motion.article>
 	)
 }

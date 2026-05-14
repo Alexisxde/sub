@@ -9,12 +9,8 @@ export async function GET(_request: NextRequest) {
 	if (!userId) return NextResponse.json({ error: "No autorizado." }, { status: UNAUTHORIZED })
 	try {
 		const categories = await prisma.category.findMany({
-			where: {
-				OR: [{ userId: null }, { userId }],
-				isDeleted: false
-			},
-			select: { id: true, name: true },
-			orderBy: { name: "asc" }
+			select: { id: true, name: true, logo: true },
+			orderBy: { createdAt: "asc" }
 		})
 		return NextResponse.json(categories, { status: OK })
 	} catch (_) {

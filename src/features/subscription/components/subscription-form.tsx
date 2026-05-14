@@ -136,8 +136,12 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 							<SelectMessageError message={errors.categoryId?.message} />
 							<SelectContent>
 								<SelectGroup>
-									{categories.map(({ id, name }) => (
-										<SelectItem key={id} value={id}>
+									{categories.map(({ id, name, logo }) => (
+										<SelectItem key={id} value={id} className="gap-1">
+											<div
+												className="[&_svg]:size-4 flex items-center justify-center"
+												dangerouslySetInnerHTML={{ __html: logo || "" }}
+											/>
 											{name}
 										</SelectItem>
 									))}

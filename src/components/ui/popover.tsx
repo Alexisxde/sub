@@ -54,7 +54,7 @@ export type PopoverProps = {
 
 function Popover({
 	children,
-	transition = { type: "spring", bounce: 0.05, duration: 0.3 },
+	transition = { type: "spring", bounce: 0.05, duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 },
 	defaultOpen,
 	open,
 	onOpenChange,

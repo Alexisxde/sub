@@ -22,7 +22,6 @@ model User {
   updatedAt      DateTime              @updatedAt
   avatarId       String?
   avatar         Avatar?
-  categories     Category[]
   subscriptions  Subscription[]
 
   @@index([email])
@@ -41,12 +40,11 @@ model Avatar {
 model Category {
   id            String         @id @default(uuid())
   name          String
+  logo          String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   isDeleted     Boolean        @default(false)
   subscriptions Subscription[]
-  userId        String?
-  user          User?          @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 
 model Service {

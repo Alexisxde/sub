@@ -1,20 +1,28 @@
 "use client"
 import { BookMarked, Bot, Laptop, Monitor, Puzzle, Sparkles } from "lucide-react"
+import { motion } from "motion/react"
 import { Cell, Pie, PieChart } from "recharts"
 
+type Props = { month: number; year: number }
+
 const data = [
-	{ name: "Software", value: 5, pct: "50%", icon: Laptop },
-	{ name: "Streaming", value: 2, pct: "20%", icon: Monitor },
-	{ name: "Educación", value: 1, pct: "10%", icon: BookMarked },
-	{ name: "IA", value: 1, pct: "10%", icon: Bot },
-	{ name: "Otros", value: 1, pct: "10%", icon: Sparkles }
+	{ name: "IA", value: 5, amount: 700, pct: "50%", icon: Bot },
+	{ name: "Software", value: 2, amount: 225, pct: "20%", icon: Laptop },
+	{ name: "Streaming", value: 1, amount: 25, pct: "10%", icon: Monitor },
+	{ name: "Educación", value: 1, amount: 25, pct: "10%", icon: BookMarked },
+	{ name: "Otros", value: 1, amount: 25, pct: "10%", icon: Sparkles }
 ]
 
 const total = data.reduce((s, d) => s + d.value, 0)
 
-export default function AnalyticsCardCategory() {
+export default function AnalyticsCardCategory({ month, year }: Props) {
+	console.log("AnalyticsCardCategory", { month, year })
 	return (
-		<article className="rounded-4xl bg-card p-6">
+		<motion.article
+			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
+			className="rounded-4xl bg-card p-6">
 			<header className="flex items-center gap-2">
 				<Puzzle className="size-5" />
 				<h3 className="text-primary font-medium text-base">Categorías</h3>
@@ -56,13 +64,13 @@ export default function AnalyticsCardCategory() {
 							<Icon size={16} className="text-muted-foreground shrink-0" />
 							<span className="flex-1 text-gray-300 text-[13px]">{item.name}</span>
 							<span className="text-gray-200 text-[13px] font-semibold tabular-nums border-r pr-4 border-border">
-								{item.value.toLocaleString()}
+								${item.amount}
 							</span>
 							<span className="text-muted-foreground text-[12px] tabular-nums w-7 text-right">{item.pct}</span>
 						</div>
 					)
 				})}
 			</footer>
-		</article>
+		</motion.article>
 	)
 }

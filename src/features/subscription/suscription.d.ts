@@ -15,6 +15,7 @@ export type PaymentMethod = {
 export type Category = {
 	id: string
 	name: string
+	logo: string
 }
 
 export type SubcriptionHistory = {
