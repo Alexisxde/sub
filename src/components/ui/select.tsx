@@ -12,8 +12,8 @@ type SelectContextValue = {
 	variants?: Variants
 	value?: any
 	onValueChange?: (value: any) => void
-	selectedLabel: string | null
-	reportLabel: (value: any, label: string) => void
+	selectedContent: React.ReactNode | null
+	reportContent: (value: any, content: React.ReactNode) => void
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null)
@@ -34,7 +34,7 @@ function useSelectLogic({
 	const uniqueId = useId()
 	const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen)
 	const [uncontrolledValue, setUncontrolledValue] = useState<any>(undefined)
-	const [labels, setLabels] = useState<Record<string, string>>({})
+	const [contents, setContents] = useState<Record<string, React.ReactNode>>({})
 
 	const isOpen = controlledOpen ?? uncontrolledOpen
 	const value = controlledValue ?? uncontrolledValue
@@ -55,11 +55,11 @@ function useSelectLogic({
 		close()
 	}
 
-	const reportLabel = (val: any, label: string) => {
+	const reportContent = (val: any, content: React.ReactNode) => {
 		const key = String(val)
-		setLabels((prev) => {
-			if (prev[key] === label) return prev
-			return { ...prev, [key]: label }
+		setContents((prev) => {
+			if (prev[key] === content) return prev
+			return { ...prev, [key]: content }
 		})
 	}
 
@@ -70,8 +70,8 @@ function useSelectLogic({
 		uniqueId,
 		value,
 		onValueChange: handleValueChange,
-		selectedLabel: labels[String(value)] || null,
-		reportLabel
+		selectedContent: contents[String(value)] || null,
+		reportContent
 	}
 }
 
@@ -123,18 +123,18 @@ export function Select({
 
 type SelectValueProps = {
 	placeholder: string
-} & React.ComponentProps<typeof motion.span>
+} & React.ComponentProps<typeof motion.div>
 
 export function SelectValue({ placeholder, className, ...props }: SelectValueProps) {
-	const { selectedLabel } = useSelect()
+	const { selectedContent } = useSelect()
 	return (
-		<motion.span
-			className={cn("truncate", className, {
-				"text-muted-foreground": selectedLabel === null
+		<motion.div
+			className={cn("truncate flex items-center gap-1", className, {
+				"text-muted-foreground": selectedContent === null
 			})}
 			{...props}>
-			{selectedLabel || placeholder}
-		</motion.span>
+			{selectedContent || placeholder}
+		</motion.div>
 	)
 }
 
@@ -179,12 +179,12 @@ export type SelectItemProps = {
 } & React.ComponentProps<typeof motion.div>
 
 export function SelectItem({ value, children, className, ...props }: SelectItemProps) {
-	const { value: v, reportLabel, onValueChange } = useSelect()
+	const { value: v, reportContent, onValueChange } = useSelect()
 	const isSelected = v === value
 
 	useEffect(() => {
-		if (typeof children === "string") reportLabel(value, children)
-	}, [value, children, reportLabel])
+		reportContent(value, children)
+	}, [value, children, reportContent])
 
 	return (
 		<motion.div
@@ -297,7 +297,7 @@ export function SelectTrigger({
 				<SelectValue
 					placeholder={placeholder ?? "Seleccionar"}
 					className={cn(
-						"absolute inset-0 top-4 px-4 pt-4.5 focus:outline-none text-foreground text-sm text-ellipsis pointer-events-none",
+						"absolute inset-0 px-4 pt-4.5 focus:outline-none text-foreground text-sm text-ellipsis pointer-events-none",
 						classValue
 					)}
 				/>

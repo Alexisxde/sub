@@ -1,13 +1,13 @@
 "use client"
-import { useServices } from "@/features/service/hooks/use-services"
 import { monthStringShort } from "@/utils/month-string"
 import { Plus, Receipt } from "lucide-react"
 import { motion } from "motion/react"
+import { useAnalyticsSubscriptions } from "../hooks/use-analytics-subscriptions"
 
 type Props = { month: number; year: number }
 
-export default function AnalyticsCardServices({ month }: Props) {
-	const { data, isLoading } = useServices()
+export default function AnalyticsCardServices({ month, year }: Props) {
+	const { data, isLoading } = useAnalyticsSubscriptions({ month, year })
 
 	if (isLoading) return null
 
@@ -37,24 +37,31 @@ export default function AnalyticsCardServices({ month }: Props) {
 				</section>
 			) : (
 				<>
-					<section className="flex flex-col gap-2 divide-y divide-border">
-						{data.map(({ id, name, logo }, idx) => (
-							<div key={id} className="flex items-center gap-3 pb-2">
+					<section className="flex flex-col gap-2 divide-y divide-border overflow-hidden">
+						{data.map(({ id, name, logo, amount, period, startDate, endDate }) => (
+							<div key={id} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
 								<div
 									className="[&_svg]:size-5 flex items-center justify-center"
 									dangerouslySetInnerHTML={{ __html: logo || "" }}
 								/>
-								<div className="flex flex-col gap-1 border-r pr-4 border-border w-full">
+								<div className="flex flex-col gap-1 w-full">
 									<span className="text-sm font-medium leading-none text-foreground">{name}</span>
 									<span className="text-xs text-muted-foreground">
-										{idx + 9} {monthStringShort(month)} - {idx + 9} {monthStringShort(month + 1)}
+										{new Date(startDate).getUTCDate()} {monthStringShort(new Date(startDate).getUTCMonth())} -{" "}
+										{new Date(endDate).getUTCDate()} {monthStringShort(new Date(endDate).getUTCMonth())}
 									</span>
 								</div>
-								<span className="w-20 text-left text-sm text-muted-foreground pr-2">${idx + 1}0.00/mes</span>
+								<span className="w-28 text-right text-sm text-muted-foreground pr-2">
+									${amount.toFixed(2)}/{period === "month" ? "mes" : "año"}
+								</span>
 							</div>
 						))}
 					</section>
-					<footer className="text-center text-[11px] text-muted-foreground -mt-2 underline">+5 más</footer>
+					{data.length > 5 && (
+						<footer className="text-center text-[11px] text-muted-foreground -mt-2 underline">
+							+{data.length - 5} más
+						</footer>
+					)}
 				</>
 			)}
 		</motion.article>

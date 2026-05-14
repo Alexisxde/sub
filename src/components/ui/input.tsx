@@ -16,7 +16,7 @@ export const Input = ({ label, className, fieldClassName, labelClassName, error,
 	const id = useId()
 
 	return (
-		<>
+		<div className="flex flex-col gap-3 w-full">
 			<motion.label
 				animate={error ? { x: [0, -24, 24, -24, 24, 0] } : { x: 0 }}
 				transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -45,7 +45,7 @@ export const Input = ({ label, className, fieldClassName, labelClassName, error,
 					{error}
 				</motion.p>
 			)}
-		</>
+		</div>
 	)
 }
 

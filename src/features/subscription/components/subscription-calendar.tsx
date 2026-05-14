@@ -19,7 +19,7 @@ export default function SubscriptionCalendar() {
 
 	const month = currentDate.getMonth()
 	const year = currentDate.getFullYear()
-	const { data, isLoading } = useSubscriptions({ month: month + 1, year })
+	const { data, isLoading } = useSubscriptions({ month, year })
 
 	const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1))
 	const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1))

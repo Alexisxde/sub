@@ -84,7 +84,7 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 					/>
 				)}
 			/>
-			<div className="flex items-start space-x-4">
+			<div className="flex items-start space-x-4 space-y-4 mb-0">
 				<Controller
 					name="amount"
 					control={control}

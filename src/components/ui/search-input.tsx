@@ -5,18 +5,18 @@ import { Search, X } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useId, useRef, useState, type ComponentPropsWithoutRef } from "react"
 
-type DataItem = {
-	id: string
-	name: string
-	logo?: string
-}
+// type DataItem = {
+// 	id: string
+// 	name: string
+// 	logo?: string
+// }
 
 type SearchInputProps = {
 	label?: string
 	error?: string
 	onClear?: () => void
-	data?: DataItem[] | []
-	onSelect?: (item: DataItem) => void
+	data?: any[]
+	onSelect?: (item: any) => void
 } & ComponentPropsWithoutRef<"input">
 
 export function SearchInput({
@@ -57,7 +57,7 @@ export function SearchInput({
 
 	const filteredData = data.filter((item) => item.name.toLowerCase().includes(String(displayValue).toLowerCase()))
 
-	const handleSelect = (item: DataItem) => {
+	const handleSelect = (item: any) => {
 		if (onSelect) {
 			onSelect(item)
 		} else if (onChange) {

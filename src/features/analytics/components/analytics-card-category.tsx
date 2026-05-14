@@ -1,22 +1,15 @@
 "use client"
-import { BookMarked, Bot, Laptop, Monitor, Puzzle, Sparkles } from "lucide-react"
+import { Plus, Puzzle, Receipt } from "lucide-react"
 import { motion } from "motion/react"
 import { Cell, Pie, PieChart } from "recharts"
+import { useAnalyticsCategories } from "../hooks/use-analytics-categories"
 
 type Props = { month: number; year: number }
 
-const data = [
-	{ name: "IA", value: 5, amount: 700, pct: "50%", icon: Bot },
-	{ name: "Software", value: 2, amount: 225, pct: "20%", icon: Laptop },
-	{ name: "Streaming", value: 1, amount: 25, pct: "10%", icon: Monitor },
-	{ name: "Educación", value: 1, amount: 25, pct: "10%", icon: BookMarked },
-	{ name: "Otros", value: 1, amount: 25, pct: "10%", icon: Sparkles }
-]
-
-const total = data.reduce((s, d) => s + d.value, 0)
-
 export default function AnalyticsCardCategory({ month, year }: Props) {
-	console.log("AnalyticsCardCategory", { month, year })
+	const { data = [] } = useAnalyticsCategories({ month, year })
+	const total = data.reduce((s, d) => s + d.value, 0)
+
 	return (
 		<motion.article
 			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
@@ -27,50 +20,70 @@ export default function AnalyticsCardCategory({ month, year }: Props) {
 				<Puzzle className="size-5" />
 				<h3 className="text-primary font-medium text-base">Categorías</h3>
 			</header>
-			<section className="relative flex w-full items-center justify-center">
-				<PieChart width={250} height={130}>
-					<Pie
-						data={data}
-						cx={120}
-						cy={118}
-						startAngle={180}
-						endAngle={0}
-						innerRadius={74}
-						outerRadius={104}
-						paddingAngle={3}
-						dataKey="value"
-						strokeWidth={0}
-						cornerRadius={6}
-						labelLine={false}>
-						{data.map((_, index) => (
-							<Cell key={`cell-${index}`} style={{ fill: `var(--chart-${index + 1})` }} stroke="transparent" />
-						))}
-					</Pie>
-				</PieChart>
-				<div className="absolute bottom-2 flex flex-col items-center">
-					<span className="text-primary text-[32px] font-semibold leading-none tracking-tight">{total}</span>
-					<span className="text-muted-foreground text-xs mt-0.5">Suscripciones</span>
-				</div>
-			</section>
-			<footer className="mt-2 flex flex-col gap-3">
-				{data.map((item, index) => {
-					const Icon = item.icon
-					return (
-						<div key={item.name} className="flex items-center gap-2.5">
-							<span
-								className="size-2.5 rounded-full shrink-0"
-								style={{ backgroundColor: `var(--chart-${index + 1})` }}
-							/>
-							<Icon size={16} className="text-muted-foreground shrink-0" />
-							<span className="flex-1 text-gray-300 text-[13px]">{item.name}</span>
-							<span className="text-gray-200 text-[13px] font-semibold tabular-nums border-r pr-4 border-border">
-								${item.amount}
-							</span>
-							<span className="text-muted-foreground text-[12px] tabular-nums w-7 text-right">{item.pct}</span>
+			{!data || data.length === 4 ? (
+				<section className="flex flex-col flex-1 items-center justify-center size-full p-6 text-center gap-3">
+					<div className="p-4 rounded-full bg-muted">
+						<Receipt className="size-7 text-muted-foreground" />
+					</div>
+					<h3 className="text-base font-semibold text-foreground">No hay suscripciones</h3>
+					<p className="text-sm text-muted-foreground w-full">
+						Actualmente no tenés ninguna suscripción. Podés agregar una nueva en el botón{" "}
+						<span className="inline-flex ml-0.5 items-center justify-center p-0.75 bg-primary text-primary-foreground rounded-full">
+							<Plus className="size-3" />
+						</span>
+						.
+					</p>
+				</section>
+			) : (
+				<>
+					<section className="relative flex w-full items-center justify-center">
+						<PieChart width={250} height={130}>
+							<Pie
+								data={data}
+								cx={120}
+								cy={118}
+								startAngle={180}
+								endAngle={0}
+								innerRadius={74}
+								outerRadius={104}
+								paddingAngle={3}
+								dataKey="value"
+								strokeWidth={0}
+								cornerRadius={6}
+								labelLine={false}>
+								{data.map((_, index) => (
+									<Cell key={`cell-${index}`} style={{ fill: `var(--chart-${index + 1})` }} stroke="transparent" />
+								))}
+							</Pie>
+						</PieChart>
+						<div className="absolute bottom-2 flex flex-col items-center">
+							<span className="text-primary text-[32px] font-semibold leading-none tracking-tight">{total}</span>
+							<span className="text-muted-foreground text-xs mt-0.5">Suscripciones</span>
 						</div>
-					)
-				})}
-			</footer>
+					</section>
+					<footer className="mt-2 flex flex-col gap-3">
+						{data.map((item, index) => {
+							return (
+								<div key={item.name} className="flex items-center gap-2.5">
+									<span
+										className="size-2.5 rounded-full shrink-0"
+										style={{ backgroundColor: `var(--chart-${index + 1})` }}
+									/>
+									<div
+										className="[&_svg]:size-4 flex items-center justify-center"
+										dangerouslySetInnerHTML={{ __html: item.logo || "" }}
+									/>
+									<span className="flex-1 text-gray-300 text-[13px]">{item.name}</span>
+									<span className="text-gray-200 text-[13px] font-semibold tabular-nums border-r pr-4 border-border">
+										${item.amount}
+									</span>
+									<span className="text-muted-foreground text-[12px] tabular-nums w-7 text-right">{item.pct}</span>
+								</div>
+							)
+						})}
+					</footer>
+				</>
+			)}
 		</motion.article>
 	)
 }
