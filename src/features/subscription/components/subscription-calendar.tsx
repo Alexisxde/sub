@@ -31,8 +31,8 @@ export default function SubscriptionCalendar() {
 	const subscriptionsByDay = useMemo(() => {
 		if (!data) return {}
 		const map: Record<number, { sub: Subcription; type: "start" | "end"; amount: number; isExpired?: boolean }[]> = {}
-		const today = new Date()
-		today.setHours(0, 0, 0, 0)
+		const now = new Date()
+		const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
 
 		for (const sub of data) {
 			for (const h of sub.history) {
@@ -48,7 +48,8 @@ export default function SubscriptionCalendar() {
 				if (eDate.getUTCMonth() === month && eDate.getUTCFullYear() === year) {
 					const day = eDate.getUTCDate()
 					if (!map[day]) map[day] = []
-					const isExpired = eDate < today
+					const eDateMidnight = new Date(Date.UTC(eDate.getUTCFullYear(), eDate.getUTCMonth(), eDate.getUTCDate()))
+					const isExpired = eDateMidnight < today
 					map[day].push({ sub, type: "end", amount: h.amount, isExpired })
 				}
 			}
@@ -180,9 +181,9 @@ export default function SubscriptionCalendar() {
 								{daySubscriptions.slice(0, 2).map((item, idx) => (
 									<div key={`${key}-sub-${idx}`} className="relative p-1">
 										<motion.div
-											initial={{ opacity: 0, scale: 0.9, y: 10, filter: "blur(8px)" }}
+											initial={{ opacity: 0, scale: 0.9, y: 10, filter: "blur(10px)" }}
 											animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-											exit={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(8px)" }}
+											exit={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
 											className="[&_svg]:size-5 z-2 flex items-center justify-center"
 											dangerouslySetInnerHTML={{ __html: item.sub.service.logo ?? "" }}
 										/>

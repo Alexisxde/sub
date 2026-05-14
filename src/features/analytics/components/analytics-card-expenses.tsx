@@ -3,15 +3,8 @@ import { monthStringLong } from "@/utils/month-string"
 import { DollarSign } from "lucide-react"
 import { motion } from "motion/react"
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-
-const MONTHS = [
-	{ label: "Dic", actual: 200 },
-	{ label: "Ene", actual: 300 },
-	{ label: "Feb", actual: 500 },
-	{ label: "Mar", actual: 500 },
-	{ label: "Abr", actual: 700 },
-	{ label: "May", actual: 1000 }
-]
+import { useAnalyticsExpensesBeforeMonth } from "../hooks/use-analytics-expenses-before-month"
+import { CardEmptyState } from "./analytics-card-empty"
 
 type Props = { month: number; year: number }
 
@@ -36,8 +29,13 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 	return null
 }
 
-export default function AnalyticsCardExpenses({ month }: Props) {
-	const lastMonth = MONTHS[MONTHS.length - 1]
+export default function AnalyticsCardExpenses({ month, year }: Props) {
+	const { data: monthsData = [], isLoading } = useAnalyticsExpensesBeforeMonth({ month, year })
+
+	if (isLoading) return <article className="rounded-4xl bg-card p-6 min-h-53 w-full animate-pulse" />
+
+	const lastMonth = monthsData[monthsData.length - 1] || { actual: 0 }
+	const hasData = monthsData.some((d) => d.actual > 0)
 
 	return (
 		<motion.article
@@ -49,34 +47,45 @@ export default function AnalyticsCardExpenses({ month }: Props) {
 				<DollarSign className="size-5" />
 				<h3 className="text-primary font-medium text-base">Últimos 6 meses</h3>
 			</header>
-			<p className="text-4xl font-semibold text-foreground flex items-baseline gap-0.5">
-				${lastMonth.actual}
-				<span className="text-sm text-muted-foreground">/en {monthStringLong(month)}</span>
-			</p>
-			<section className="w-full flex-1 mt-2">
-				<ResponsiveContainer width="100%" height="100%">
-					<BarChart data={MONTHS}>
-						<CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
-						<XAxis
-							dataKey="label"
-							tickLine={false}
-							axisLine={false}
-							tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
-							tickFormatter={(v) => `${v}`}
-							interval={0}
-						/>
-						<YAxis
-							tickLine={false}
-							axisLine={false}
-							tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
-							tickFormatter={(v) => `$${v}`}
-							width={40}
-						/>
-						<Tooltip content={<CustomTooltip />} cursor={{ fill: "var(--muted)" }} />
-						<Bar dataKey="actual" radius={[6, 6, 0, 0]} fill="var(--chart-4)" activeBar={{ fill: "var(--chart-5)" }} />
-					</BarChart>
-				</ResponsiveContainer>
-			</section>
+			{!hasData ? (
+				<CardEmptyState />
+			) : (
+				<>
+					<p className="text-4xl font-semibold text-foreground flex items-baseline gap-0.5">
+						${lastMonth.actual.toFixed(2)}
+						<span className="text-sm text-muted-foreground">/en {monthStringLong(month)}</span>
+					</p>
+					<section className="w-full flex-1 mt-2">
+						<ResponsiveContainer width="100%" height="100%">
+							<BarChart data={monthsData}>
+								<CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+								<XAxis
+									dataKey="label"
+									tickLine={false}
+									axisLine={false}
+									tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+									tickFormatter={(v) => `${v}`}
+									interval={0}
+								/>
+								<YAxis
+									tickLine={false}
+									axisLine={false}
+									tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+									tickFormatter={(v) => `$${v}`}
+									width={40}
+								/>
+								<Tooltip content={<CustomTooltip />} cursor={{ fill: "var(--muted)" }} />
+								<Bar
+									dataKey="actual"
+									radius={[6, 6, 0, 0]}
+									fill="var(--chart-4)"
+									activeBar={{ fill: "var(--chart-5)" }}
+								/>
+							</BarChart>
+						</ResponsiveContainer>
+					</section>
+				</>
+			)}
 		</motion.article>
 	)
 }

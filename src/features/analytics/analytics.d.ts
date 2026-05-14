@@ -23,3 +23,15 @@ export interface AnalyticsPayment {
 	amount: number
 	pct: string
 }
+
+export interface AnalyticsExpenseMonth {
+	day: number
+	actual: number
+}
+
+export interface AnalyticsExpenseBeforeMonth {
+	label: string
+	actual: number
+	month: number
+	year: number
+}

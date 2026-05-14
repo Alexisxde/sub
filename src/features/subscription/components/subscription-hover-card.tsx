@@ -128,7 +128,7 @@ export function SubscriptionHoverCard({
 													<div className="size-2 rounded-full bg-destructive" />
 												)}
 												<span className="text-xs text-muted-foreground">
-													{item.type === "start" ? "Subscripción" : item.isExpired ? "Expirado" : "Expira"} • $
+													{item.type === "start" ? "Suscripción" : item.isExpired ? "Expiró" : "Expira"} • $
 													{item.amount.toFixed(2)}
 												</span>
 											</div>

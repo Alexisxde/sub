@@ -1,15 +1,16 @@
 "use client"
 import { monthStringShort } from "@/utils/month-string"
-import { Plus, Receipt } from "lucide-react"
+import { Receipt } from "lucide-react"
 import { motion } from "motion/react"
 import { useAnalyticsSubscriptions } from "../hooks/use-analytics-subscriptions"
+import { CardEmptyState } from "./analytics-card-empty"
 
 type Props = { month: number; year: number }
 
 export default function AnalyticsCardServices({ month, year }: Props) {
-	const { data, isLoading } = useAnalyticsSubscriptions({ month, year })
+	const { data = [], isLoading } = useAnalyticsSubscriptions({ month, year })
 
-	if (isLoading) return null
+	if (isLoading) return <article className="rounded-4xl bg-card p-6 min-h-64 animate-pulse" />
 
 	return (
 		<motion.article
@@ -21,24 +22,12 @@ export default function AnalyticsCardServices({ month, year }: Props) {
 				<Receipt className="size-5" />
 				<h3 className="text-primary font-medium text-base">Suscripciones</h3>
 			</header>
-			{!data || data.length === 0 ? (
-				<section className="flex flex-col flex-1 items-center justify-center size-full p-6 text-center gap-3">
-					<div className="p-4 rounded-full bg-muted">
-						<Receipt className="size-7 text-muted-foreground" />
-					</div>
-					<h3 className="text-base font-semibold text-foreground">No hay suscripciones</h3>
-					<p className="text-sm text-muted-foreground w-full">
-						Actualmente no tenés ninguna suscripción. Podés agregar una nueva en el botón{" "}
-						<span className="inline-flex ml-0.5 items-center justify-center p-0.75 bg-primary text-primary-foreground rounded-full">
-							<Plus className="size-3" />
-						</span>
-						.
-					</p>
-				</section>
+			{data.length === 0 ? (
+				<CardEmptyState />
 			) : (
 				<>
 					<section className="flex flex-col gap-2 divide-y divide-border overflow-hidden">
-						{data.map(({ id, name, logo, amount, period, startDate, endDate }) => (
+						{data.slice(0, 5).map(({ id, name, logo, amount, period, startDate, endDate }) => (
 							<div key={id} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
 								<div
 									className="[&_svg]:size-5 flex items-center justify-center"

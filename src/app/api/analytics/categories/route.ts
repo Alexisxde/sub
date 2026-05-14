@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 	if (Number.isNaN(m) || Number.isNaN(y))
 		return NextResponse.json({ error: "Mes y año deben ser números." }, { status: BAD_REQUEST })
 
-	const startOfMonth = new Date(y, m + 1, 1)
+	const startOfMonth = new Date(y, m, 1)
 	const endOfMonth = new Date(y, m + 1, 0, 23, 59, 59, 999)
 
 	try {

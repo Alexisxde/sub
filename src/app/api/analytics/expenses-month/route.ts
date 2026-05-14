@@ -23,32 +23,34 @@ export async function GET(request: Request) {
 	const endOfMonth = new Date(y, m + 1, 0, 23, 59, 59, 999)
 
 	try {
-		const subscriptions = await prisma.subscription.findMany({
+		const history = await prisma.historySubscription.findMany({
 			where: {
-				userId,
-				history: { some: { AND: [{ startDate: { lte: endOfMonth } }, { endDate: { gte: startOfMonth } }] } }
+				subscription: { userId },
+				startDate: {
+					gte: startOfMonth,
+					lte: endOfMonth
+				}
 			},
 			select: {
-				id: true,
-				service: { select: { name: true, logo: true } },
-				history: {
-					where: { AND: [{ startDate: { lte: endOfMonth } }, { endDate: { gte: startOfMonth } }] },
-					select: { amount: true, period: true, startDate: true, endDate: true }
-				}
+				startDate: true,
+				amount: true
 			}
 		})
 
-		const formattedSubscriptions = subscriptions.map((sub) => ({
-			id: sub.id,
-			name: sub.service.name,
-			logo: sub.service.logo,
-			amount: sub.history[0]?.amount || 0,
-			period: sub.history[0]?.period || "month",
-			startDate: sub.history[0]?.startDate,
-			endDate: sub.history[0]?.endDate
-		}))
+		const dailyExpenses: Record<number, number> = {}
+		for (const h of history) {
+			const day = h.startDate.getDate()
+			dailyExpenses[day] = (dailyExpenses[day] || 0) + h.amount
+		}
 
-		return NextResponse.json(formattedSubscriptions, { status: OK })
+		const formattedData = Object.entries(dailyExpenses)
+			.map(([day, actual]) => ({
+				day: Number(day),
+				actual
+			}))
+			.sort((a, b) => a.day - b.day)
+
+		return NextResponse.json(formattedData, { status: OK })
 	} catch (_) {
 		return NextResponse.json({ error: "Internal Server Error" }, { status: INTERNAL_SERVER_ERROR })
 	}

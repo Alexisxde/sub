@@ -1,13 +1,17 @@
 "use client"
-import { Plus, Puzzle, Receipt } from "lucide-react"
+import { Puzzle } from "lucide-react"
 import { motion } from "motion/react"
 import { Cell, Pie, PieChart } from "recharts"
 import { useAnalyticsCategories } from "../hooks/use-analytics-categories"
+import { CardEmptyState } from "./analytics-card-empty"
 
 type Props = { month: number; year: number }
 
 export default function AnalyticsCardCategory({ month, year }: Props) {
-	const { data = [] } = useAnalyticsCategories({ month, year })
+	const { data = [], isLoading } = useAnalyticsCategories({ month, year })
+
+	if (isLoading) return <article className="rounded-4xl bg-card p-6 min-h-53 animate-pulse" />
+
 	const total = data.reduce((s, d) => s + d.value, 0)
 
 	return (
@@ -15,25 +19,13 @@ export default function AnalyticsCardCategory({ month, year }: Props) {
 			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
 			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
 			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
-			className="rounded-4xl bg-card p-6">
-			<header className="flex items-center gap-2">
+			className="rounded-4xl bg-card p-6 min-h-53 flex flex-col">
+			<header className="flex items-center gap-2 mb-2">
 				<Puzzle className="size-5" />
 				<h3 className="text-primary font-medium text-base">Categorías</h3>
 			</header>
-			{!data || data.length === 4 ? (
-				<section className="flex flex-col flex-1 items-center justify-center size-full p-6 text-center gap-3">
-					<div className="p-4 rounded-full bg-muted">
-						<Receipt className="size-7 text-muted-foreground" />
-					</div>
-					<h3 className="text-base font-semibold text-foreground">No hay suscripciones</h3>
-					<p className="text-sm text-muted-foreground w-full">
-						Actualmente no tenés ninguna suscripción. Podés agregar una nueva en el botón{" "}
-						<span className="inline-flex ml-0.5 items-center justify-center p-0.75 bg-primary text-primary-foreground rounded-full">
-							<Plus className="size-3" />
-						</span>
-						.
-					</p>
-				</section>
+			{data.length === 0 ? (
+				<CardEmptyState />
 			) : (
 				<>
 					<section className="relative flex w-full items-center justify-center">
