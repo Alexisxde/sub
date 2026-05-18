@@ -9,7 +9,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { createContext, useContext, useState } from "react"
 import LogOutPopover from "./log-out-popover"
-import NavegationPopover from "./navigation-popover"
 import ThemePopover from "./theme-popover"
 
 type SidebarMode = "sidebar" | "dock"
@@ -59,14 +58,12 @@ export default function Sidebar() {
 
 	if (mode === "dock") {
 		return (
-			<div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden md:block">
-				<div className="group relative">
-					<Dock className="shadow-xl border-primary/20 bg-card/80 backdrop-blur-md">
-						{navItems.map((item) => (
-							<DockAnchor key={item.href} {...item} />
-						))}
-					</Dock>
-				</div>
+			<div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-1 hidden md:block">
+				<Dock>
+					{navItems.map((item) => (
+						<DockAnchor key={item.href} {...item} />
+					))}
+				</Dock>
 			</div>
 		)
 	}
@@ -107,7 +104,6 @@ export default function Sidebar() {
 							</motion.h2>
 						</PopoverHeader>
 						<div className="flex flex-col gap-1">
-							<NavegationPopover />
 							<ThemePopover />
 							<LogOutPopover />
 						</div>
