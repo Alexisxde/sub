@@ -42,7 +42,7 @@ export default function AnalyticsCardExpenses({ month, year }: Props) {
 			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
 			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
 			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
-			className="flex flex-col bg-card rounded-4xl p-6 shadow-md">
+			className="flex flex-col bg-card rounded-4xl p-6 shadow-md min-h-64">
 			<header className="flex items-center gap-2 mb-3">
 				<DollarSign className="size-5" />
 				<h3 className="text-primary font-medium text-base">Últimos 6 meses</h3>

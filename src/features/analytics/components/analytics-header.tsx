@@ -3,23 +3,9 @@
 import Button from "@/components/ui/button"
 import { TextAnimate } from "@/components/ui/text-animate"
 import SubscriptionCreatePopover from "@/features/subscription/components/subscription-create-popover"
+import { monthStringLong } from "@/utils/month-string"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion } from "motion/react"
-
-const MONTHS = [
-	"Enero",
-	"Febrero",
-	"Marzo",
-	"Abril",
-	"Mayo",
-	"Junio",
-	"Julio",
-	"Agosto",
-	"Septiembre",
-	"Octubre",
-	"Noviembre",
-	"Diciembre"
-]
 
 type Props = {
 	month: number
@@ -43,13 +29,13 @@ export default function AnalyticsHeader({ month, year, prevMonth, nextMonth }: P
 				<Button ripple type="button" onClick={prevMonth} variant="outline" className="size-12 rounded-full">
 					<ChevronLeft className="size-6" />
 				</Button>
-				<div className="min-w-70 text-center">
+				<div className="text-center">
 					<TextAnimate
 						className="text-5xl md:text-6xl text-primary font-semibold"
 						duration={0.3}
 						getDelay={(i) => i * 0.02}
 						transition={{ ease: [0.175, 0.885, 0.32, 1.1] }}>
-						{`${MONTHS[month]}, ${year}`}
+						{`${monthStringLong(month)}, ${year}`}
 					</TextAnimate>
 				</div>
 				<Button ripple type="button" onClick={nextMonth} variant="outline" className="size-12 rounded-full">
