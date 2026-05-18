@@ -1,22 +1,8 @@
 import Button from "@/components/ui/button"
 import { TextAnimate } from "@/components/ui/text-animate"
+import { monthStringLong } from "@/utils/month-string"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import SubscriptionCreatePopover from "./subscription-create-popover"
-
-const MONTHS = [
-	"Enero",
-	"Febrero",
-	"Marzo",
-	"Abril",
-	"Mayo",
-	"Junio",
-	"Julio",
-	"Agosto",
-	"Septiembre",
-	"Octubre",
-	"Noviembre",
-	"Diciembre"
-]
 
 type Props = {
 	total: string
@@ -33,22 +19,20 @@ export default function HeaderCalendar({ month, year, total, prevMonth, nextMont
 				<SubscriptionCreatePopover />
 			</div>
 			<h2 className="text-muted-foreground text-base font-medium tracking-tight">
-				{MONTHS[month]}, {year}
+				{monthStringLong(month)}, {year}
 			</h2>
 			<div className="flex items-center gap-4">
-				<Button ripple type="button" onClick={prevMonth} variant="outline">
+				<Button ripple onClick={prevMonth} variant="outline">
 					<ChevronLeft className="size-6" />
 				</Button>
-				<div className="min-w-70 text-center">
-					<TextAnimate
-						className="text-5xl md:text-6xl text-primary font-semibold"
-						duration={0.3}
-						getDelay={(i) => i * 0.05}
-						transition={{ ease: [0.175, 0.885, 0.32, 1.1] }}>
-						{total}
-					</TextAnimate>
-				</div>
-				<Button ripple type="button" onClick={nextMonth} variant="outline">
+				<TextAnimate
+					className="text-5xl md:text-6xl text-primary font-semibold"
+					duration={0.3}
+					getDelay={(i) => i * 0.05}
+					transition={{ ease: [0.175, 0.885, 0.32, 1.1] }}>
+					{total}
+				</TextAnimate>
+				<Button ripple onClick={nextMonth} variant="outline">
 					<ChevronRight className="size-6" />
 				</Button>
 			</div>
