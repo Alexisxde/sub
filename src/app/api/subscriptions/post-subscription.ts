@@ -27,9 +27,11 @@ export async function postSubscription(request: NextRequest) {
 			}
 		})
 
-		if (existingSubscription) {
-			return NextResponse.json({ error: "Ya existe una suscripción para este servicio en este día." }, { status: BAD_REQUEST })
-		}
+		if (existingSubscription)
+			return NextResponse.json(
+				{ error: "Ya existe una suscripción para este servicio en este día." },
+				{ status: BAD_REQUEST }
+			)
 
 		const endDate = new Date(startDate)
 		const originalDate = endDate.getDate()
@@ -47,7 +49,7 @@ export async function postSubscription(request: NextRequest) {
 			select: { id: true, history: { select: { id: true } } }
 		})
 		return NextResponse.json(subscription, { status: CREATED })
-	} catch (error) {
+	} catch (_) {
 		return NextResponse.json({ error: "Internal Server Error" }, { status: INTERNAL_SERVER_ERROR })
 	}
 }

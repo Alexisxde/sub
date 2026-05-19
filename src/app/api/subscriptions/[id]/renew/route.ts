@@ -13,22 +13,13 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 	try {
 		const subscription = await prisma.subscription.findUnique({
 			where: { id: subscriptionId, userId },
-			include: {
-				history: {
-					orderBy: { endDate: "desc" },
-					take: 1
-				}
-			}
+			include: { history: { orderBy: { endDate: "desc" }, take: 1 } }
 		})
 
-		if (!subscription) {
-			return NextResponse.json({ error: "Suscripción no encontrada." }, { status: NOT_FOUND })
-		}
+		if (!subscription) return NextResponse.json({ error: "Suscripción no encontrada." }, { status: NOT_FOUND })
 
 		const lastHistory = subscription.history[0]
-		if (!lastHistory) {
-			return NextResponse.json({ error: "No hay historial para renovar." }, { status: BAD_REQUEST })
-		}
+		if (!lastHistory) return NextResponse.json({ error: "No hay historial para renovar." }, { status: BAD_REQUEST })
 
 		const startDate = new Date(lastHistory.endDate)
 		const endDate = new Date(startDate)
@@ -37,7 +28,6 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 		if (lastHistory.period === "month") endDate.setMonth(endDate.getMonth() + 1)
 		if (lastHistory.period === "year") endDate.setFullYear(endDate.getFullYear() + 1)
 
-		// Handle month overflow (e.g., Jan 31 -> Feb 28)
 		if (endDate.getDate() !== originalDate) endDate.setDate(0)
 
 		const newHistory = await prisma.historySubscription.create({
@@ -53,7 +43,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 		})
 
 		return NextResponse.json(newHistory, { status: CREATED })
-	} catch (error) {
+	} catch (_) {
 		return NextResponse.json({ error: "Internal Server Error" }, { status: INTERNAL_SERVER_ERROR })
 	}
 }
