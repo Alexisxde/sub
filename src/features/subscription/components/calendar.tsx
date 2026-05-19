@@ -1,5 +1,5 @@
 "use client"
-import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react"
+import { AnimatePresence, motion, type HTMLMotionProps, type Variants } from "motion/react"
 import type { ReactNode } from "react"
 
 type CalendarAnimationProps = {
@@ -8,7 +8,7 @@ type CalendarAnimationProps = {
 	uniqueKey: string | number
 }
 
-const variants = {
+const variants: { container: Variants; item: Variants } = {
 	container: {
 		visible: { transition: { staggerChildren: 0.02 } }
 	},
