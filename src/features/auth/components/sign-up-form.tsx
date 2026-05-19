@@ -40,7 +40,7 @@ export default function SignUpForm() {
 					<motion.span layoutId="form-header-sign-up">Crear cuenta</motion.span>
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="rounded-lg inset-0 w-full z-20 md:rounded-4xl md:top-32 md:left-10 md:h-fit md:w-md">
+			<PopoverContent className="rounded-lg inset-0 w-full z-20 md:rounded-4xl md:top-12 md:left-[60%] md:h-fit md:w-md">
 				<PopoverHeader>
 					<motion.h2 layoutId="form-header-sign-up" className="text-2xl font-semibold">
 						Crear cuenta

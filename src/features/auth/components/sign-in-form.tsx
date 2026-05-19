@@ -44,7 +44,7 @@ export default function SignInForm() {
 					<motion.span layoutId="form-header-login">Iniciar sesión</motion.span>
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="rounded-lg inset-0 w-full z-20 md:rounded-4xl md:top-32 md:left-10 md:h-fit md:w-md">
+			<PopoverContent className="rounded-lg inset-0 w-full z-20 md:rounded-4xl md:top-12 md:left-[53%] md:h-fit md:w-md">
 				<PopoverHeader>
 					<motion.h2 layoutId="form-header-login" className="text-2xl font-semibold">
 						Iniciar sesión
