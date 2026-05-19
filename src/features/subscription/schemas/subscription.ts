@@ -2,9 +2,12 @@ import z from "zod"
 
 export const subscriptionSchema = z.object({
 	serviceId: z.string().min(1, "Seleccione un servicio."),
-	amount: z.coerce
-		.number({ message: "El monto debe ser un número." })
-		.positive({ message: "El monto debe ser un número mayor a 0." }),
+	amount: z.preprocess(
+		(a) => (a === "" ? undefined : Number(a)),
+		z
+			.number({ message: "El monto debe ser un número." })
+			.positive({ message: "El monto debe ser un número mayor a 0." })
+	),
 	categoryId: z.string({ message: "Seleccione una categoría." }).min(1, "Seleccione una categoría."),
 	startDate: z.string().min(1, "Seleccione una fecha."),
 	period: z.enum(["month", "year"], { error: "Seleccione un periodo." }),

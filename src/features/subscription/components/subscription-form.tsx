@@ -42,7 +42,7 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 		control,
 		watch
 	} = useForm<SubscriptionFormValues>({
-		resolver: zodResolver(subscriptionSchema),
+		resolver: zodResolver(subscriptionSchema) as any,
 		defaultValues: {
 			serviceId: "",
 			amount: undefined,
