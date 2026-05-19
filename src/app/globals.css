@@ -291,6 +291,7 @@
 	--shadow-2xl: var(--shadow-2xl);
 
 	--animate-rippling: rippling 500ms ease-out;
+	--animate-fade-in: fade-in 1000ms ease-out forwards;
 
 	@keyframes rippling {
 		0% {
@@ -312,9 +313,6 @@
 			transform: translateY(0);
 		}
 	}
-
-	--animate-rippling: rippling 500ms ease-out;
-	--animate-fade-in: fade-in 1000ms ease-out forwards;
 }
 
 @layer utilities {
