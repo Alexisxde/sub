@@ -1,5 +1,6 @@
 import Button from "@/components/ui/button"
 import { TextAnimate } from "@/components/ui/text-animate"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { monthStringLong } from "@/utils/month-string"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import SubscriptionCreatePopover from "./subscription-create-popover"
@@ -13,11 +14,15 @@ type Props = {
 }
 
 export default function HeaderCalendar({ month, year, total, prevMonth, nextMonth }: Props) {
+	const isMobile = useIsMobile()
+
 	return (
 		<header className="relative flex flex-col items-center gap-1 px-3 mb-2">
-			<div className="absolute w-full flex items-center justify-end">
-				<SubscriptionCreatePopover />
-			</div>
+			{!isMobile && (
+				<div className="absolute w-full flex items-center justify-end">
+					<SubscriptionCreatePopover />
+				</div>
+			)}
 			<h2 className="text-muted-foreground text-base font-medium tracking-tight">
 				{monthStringLong(month)}, {year}
 			</h2>
