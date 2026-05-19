@@ -1,36 +1,15 @@
-import Button from "@/components/ui/button"
-import SignInForm from "@/features/auth/components/sign-in-form"
-import SignUpForm from "@/features/auth/components/sign-up-form"
-import { auth } from "@/lib/auth"
-import Link from "next/link"
+import Header from "@/components/header"
+import Hero from "@/components/hero"
 
 export default async function Page() {
-	const session = await auth()
-
 	return (
-		<section className="flex flex-1 h-dvh gap-4 p-4">
-			<main className="grid w-full grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 gap-4">
-				<article className="flex flex-col gap-4 justify-between bg-card p-8 rounded-4xl">
-					<div className="flex-1" />
-					<div>
-						<h1 className="text-5xl font-semibold">Subscriptions</h1>
-						<p className="mt-4 text-base">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-					</div>
-					{session?.user ? (
-						<Button ripple asChild className="w-fit">
-							<Link href="/app">Ir a la app</Link>
-						</Button>
-					) : (
-						<div className="flex gap-2">
-							<SignInForm />
-							<SignUpForm />
-						</div>
-					)}
-				</article>
-				<article className="bg-card p-8 rounded-4xl"></article>
-				<article className="bg-card p-8 rounded-4xl"></article>
-				<article className="bg-card p-8 rounded-4xl"></article>
-			</main>
+		<section className="flex flex-col items-center justify-center p-6">
+			<div className="absolute inset-0 -z-10 h-full w-full">
+				<div className="absolute inset-0 bg-linear-to-b from-primary/10 via-background to-card" />
+				<div className="absolute left-1/2 top-0 h-125 w-full -translate-x-1/2 rounded-full bg-primary/15 blur-[120px]" />
+			</div>
+			<Header />
+			<Hero />
 		</section>
 	)
 }
