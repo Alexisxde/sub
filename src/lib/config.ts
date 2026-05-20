@@ -4,10 +4,7 @@ const envSchema = z.object({
 	DATABASE_URL: z.string(),
 	NEXT_PUBLIC_APP_URL: z.string().default("http://localhost:3000"),
 	NODE_ENV: z.string().default("production"),
-	AUTH_SECRET: z.string(),
-	CLOUDINARY_API_KEY: z.string(),
-	CLOUDINARY_API_SECRET: z.string(),
-	CLOUDINARY_CLOUD_NAME: z.string()
+	AUTH_SECRET: z.string()
 })
 
 const { error, success, data } = envSchema.safeParse(process.env)
@@ -25,12 +22,4 @@ declare global {
 	}
 }
 
-export const {
-	DATABASE_URL,
-	NEXT_PUBLIC_APP_URL,
-	NODE_ENV,
-	AUTH_SECRET,
-	CLOUDINARY_API_KEY,
-	CLOUDINARY_API_SECRET,
-	CLOUDINARY_CLOUD_NAME
-} = data
+export const { DATABASE_URL, NEXT_PUBLIC_APP_URL, NODE_ENV, AUTH_SECRET } = data
