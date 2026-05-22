@@ -114,7 +114,7 @@ export function SubscriptionHoverCard({
 											visible: { opacity: 1, x: 0 }
 										}}
 										onClick={() => handleOpenDetail(item.sub.id)}
-										className="flex items-center gap-3 p-1 hover:bg-muted rounded-lg cursor-pointer ">
+										className="flex items-center gap-3 p-1 hover:bg-muted/50 rounded-lg cursor-pointer ">
 										<div
 											className="size-8 flex items-center justify-center bg-muted rounded-lg p-1.5 [&_svg]:size-full"
 											dangerouslySetInnerHTML={{ __html: item.sub.service.logo ?? "" }}
