@@ -25,7 +25,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				return {
 					id: user.id,
 					email,
-					role: user.role,
+					isAdmin: user.role === "admin",
 					name: user.name,
 					image: user.avatar?.url ?? null
 				}
@@ -40,7 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				return {
 					...token,
 					id: user.id as string,
-					role: user.role as string,
+					isAdmin: user.isAdmin as boolean,
 					email: user.email as string,
 					image: user.image as string
 				}
@@ -51,7 +51,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			if (token) {
 				session.user.id = token.id
 				session.user.name = token.name
-				session.user.role = token.role
+				session.user.isAdmin = token.isAdmin
 				session.user.email = token.email
 				session.user.image = token.image as string
 				session.error = token.error
