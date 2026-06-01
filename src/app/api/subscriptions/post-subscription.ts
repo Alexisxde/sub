@@ -17,7 +17,7 @@ export async function postSubscription(request: NextRequest) {
 	const { period, amount, note, startDate, serviceId, categoryId, paymentMethodId } = data
 
 	try {
-		const existingSubscription = await prisma.historySubscription.findFirst({
+		const existingHistory = await prisma.historySubscription.findFirst({
 			where: {
 				startDate: new Date(startDate),
 				subscription: {
@@ -27,7 +27,7 @@ export async function postSubscription(request: NextRequest) {
 			}
 		})
 
-		if (existingSubscription)
+		if (existingHistory)
 			return NextResponse.json(
 				{ error: "Ya existe una suscripción para este servicio en este día." },
 				{ status: BAD_REQUEST }
@@ -38,6 +38,25 @@ export async function postSubscription(request: NextRequest) {
 		if (period === "month") endDate.setMonth(endDate.getMonth() + 1)
 		if (period === "year") endDate.setFullYear(endDate.getFullYear() + 1)
 		if (endDate.getDate() !== originalDate) endDate.setDate(0)
+
+		const existingSubscription = await prisma.subscription.findFirst({
+			where: { userId, serviceId }
+		})
+
+		if (existingSubscription) {
+			const history = await prisma.historySubscription.create({
+				data: {
+					subscriptionId: existingSubscription.id,
+					amount,
+					startDate: new Date(startDate),
+					endDate,
+					paymentMethodId,
+					period,
+					note
+				}
+			})
+			return NextResponse.json({ id: existingSubscription.id, history: [{ id: history.id }] }, { status: CREATED })
+		}
 
 		const subscription = await prisma.subscription.create({
 			data: {
