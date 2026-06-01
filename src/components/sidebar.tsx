@@ -1,77 +1,27 @@
 "use client"
 import Button from "@/components/ui/button"
-import { Dock, DockAnchor } from "@/components/ui/dock"
 import { Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { ChartLine, HomeIcon, LockKeyhole, Tag } from "lucide-react"
+import { ChartLine, HomeIcon, LockKeyhole } from "lucide-react"
 import { motion } from "motion/react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { createContext, useContext, useState } from "react"
 import LogOutPopover from "./log-out-popover"
 import ThemePopover from "./theme-popover"
-
-type SidebarMode = "sidebar" | "dock"
-
-interface SidebarContextType {
-	mode: SidebarMode
-	setMode: (mode: SidebarMode) => void
-	isOpen: boolean
-	setIsOpen: (isOpen: boolean) => void
-	toggleSidebar: () => void
-	toggleMode: () => void
-}
-
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined)
-
-export function SidebarProvider({ children }: { children: React.ReactNode }) {
-	const [mode, setMode] = useState<SidebarMode>("sidebar")
-	const [isOpen, setIsOpen] = useState(true)
-
-	const toggleSidebar = () => setIsOpen((prev) => !prev)
-	const toggleMode = () => setMode((prev) => (prev === "sidebar" ? "dock" : "sidebar"))
-
-	return (
-		<SidebarContext.Provider value={{ mode, setMode, isOpen, setIsOpen, toggleSidebar, toggleMode }}>
-			{children}
-		</SidebarContext.Provider>
-	)
-}
-
-export function useSidebar() {
-	const context = useContext(SidebarContext)
-	if (!context) {
-		throw new Error("useSidebar must be used within a SidebarProvider")
-	}
-	return context
-}
 
 const navItems = {
 	user: [
 		{ href: "/app", icon: <HomeIcon className="size-4 md:size-full" />, title: "Inicio" },
-		{ href: "/app/analytics", icon: <ChartLine className="size-4 md:size-full" />, title: "Estadisticas" },
-		{ href: "/app/subscriptions", icon: <Tag className="size-4 md:size-full" />, title: "Suscripciones" }
+		{ href: "/app/analytics", icon: <ChartLine className="size-4 md:size-full" />, title: "Estadisticas" }
+		// { href: "/app/subscriptions", icon: <Tag className="size-4 md:size-full" />, title: "Suscripciones" }
 	],
 	admin: [{ href: "/app/admin", icon: <LockKeyhole className="size-4 md:size-full" />, title: "Administración" }]
 }
 
 export default function Sidebar() {
-	const { mode } = useSidebar()
 	const { data: session } = useSession()
 	const pathname = usePathname()
-
-	if (mode === "dock") {
-		return (
-			<div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-1 hidden md:block">
-				<Dock>
-					{navItems.user.map((item) => (
-						<DockAnchor key={item.href} {...item} />
-					))}
-				</Dock>
-			</div>
-		)
-	}
 
 	return (
 		<motion.aside initial={false} className="z-2 md:flex h-dvh flex-col items-center py-8 hidden">
