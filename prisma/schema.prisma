@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -43,7 +42,7 @@ model Category {
   name          String
   logo          String
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  updatedAt     DateTime?      @updatedAt
   isDeleted     Boolean        @default(false)
   subscriptions Subscription[]
 }
@@ -52,7 +51,7 @@ model Service {
   id            String         @id @default(uuid())
   name          String
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  updatedAt     DateTime?      @updatedAt
   logo          String?
   subscriptions Subscription[]
 }
@@ -62,15 +61,16 @@ model PaymentMethod {
   name          String
   logo          String?
   createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  updatedAt     DateTime?             @updatedAt
   isDeleted     Boolean               @default(false)
   subscriptions HistorySubscription[]
 }
 
+
 model Subscription {
   id               String                @id @default(uuid())
   createdAt        DateTime              @default(now())
-  updatedAt        DateTime              @updatedAt
+  updatedAt        DateTime?             @updatedAt
   notificationSent Boolean               @default(false)
   history          HistorySubscription[]
 
