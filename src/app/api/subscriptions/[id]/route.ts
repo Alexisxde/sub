@@ -17,12 +17,8 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 				service: true,
 				category: true,
 				history: {
-					include: {
-						paymentMethod: true
-					},
-					orderBy: {
-						startDate: "desc"
-					}
+					include: { paymentMethod: true },
+					orderBy: { startDate: "desc" }
 				}
 			}
 		})
