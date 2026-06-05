@@ -63,7 +63,7 @@ export default function Sidebar() {
 							ripple
 							size="sm"
 							variant="secondary"
-							className="text-muted-foreground bg-muted/50 hover:bg-muted hover:text-primary transform hover:translate-x-2 hover:scale-105 transition-all duration-200 ease-in-out">
+							className="text-base text-muted-foreground bg-muted/50 hover:bg-muted hover:text-primary transform hover:translate-x-2 hover:scale-105 transition-all duration-200 ease-in-out">
 							<motion.span layoutId="settings">Opciones</motion.span>
 						</Button>
 					</PopoverTrigger>

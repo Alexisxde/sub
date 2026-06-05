@@ -110,7 +110,7 @@ export function SearchInput({
 						}}
 						placeholder={placeholder}
 						className={cn(
-							"w-full bg-transparent focus:outline-none text-foreground text-sm pt-0 pb-0 pr-8 placeholder:text-muted-foreground",
+							"w-full bg-transparent focus:outline-none text-foreground text-sm pt-0 pb-0 pr-8",
 							!!selectedItem && "cursor-default",
 							className
 						)}
