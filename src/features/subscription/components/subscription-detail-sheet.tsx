@@ -101,7 +101,7 @@ export function SubscriptionDetailSheet({ id, open, onOpenChange }: Props) {
 						</div>
 						<div className="flex justify-between items-center border-b border-border py-2">
 							<span className="text-xs text-muted-foreground">Vencimiento</span>
-							<span className="text-xs font-medium text-primary">{stats?.endDate}</span>
+							<span className="text-xs font-medium text-foreground">{stats?.endDate}</span>
 						</div>
 						<div className="flex justify-between items-center pt-2">
 							<span className="text-xs font-medium text-muted-foreground">Total invertido</span>

@@ -1,7 +1,6 @@
 "use client"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
-import { useSearchParams } from "next/navigation"
 import { useMemo, useRef, useState } from "react"
 import { useSubscriptions } from "../hooks/use-subscriptions"
 import type { Subcription } from "../suscription"
@@ -17,10 +16,9 @@ export default function SubscriptionCalendar() {
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 	const [isHoveringCard, setIsHoveringCard] = useState(false)
 	const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-	const searchParams = useSearchParams()
 
-	const month = searchParams.get("month") ? parseInt(searchParams.get("month")!) : currentDate.getMonth()
-	const year = searchParams.get("year") ? parseInt(searchParams.get("year")!) : currentDate.getFullYear()
+	const month = currentDate.getMonth()
+	const year = currentDate.getFullYear()
 	const { data, isLoading } = useSubscriptions({ month, year })
 
 	const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1))

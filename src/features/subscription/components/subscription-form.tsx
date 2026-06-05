@@ -79,6 +79,7 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 						{...field}
 						data={services}
 						label="Suscripción"
+						inputMode="search"
 						placeholder="Netflix, Spotify, AWS..."
 						error={errors.serviceId?.message}
 					/>
@@ -90,7 +91,14 @@ export default function SubscriptionForm({ onOpenChange }: Props) {
 					control={control}
 					defaultValue={undefined}
 					render={({ field }) => (
-						<Input {...field} className="flex-1" label="Monto" placeholder="0.00" error={errors.amount?.message} />
+						<Input
+							{...field}
+							className="flex-1"
+							label="Monto"
+							placeholder="0.00"
+							inputMode="decimal"
+							error={errors.amount?.message}
+						/>
 					)}
 				/>
 				<Controller
