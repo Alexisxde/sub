@@ -49,9 +49,9 @@ export default function AnalyticsCardMonth({ month, year }: Props) {
 			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
 			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
 			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
-			className="rounded-4xl bg-card p-6 space-y-3 flex-1 min-h-53 h-fit max-h-71">
+			className="rounded-4xl bg-card p-6 space-y-3 flex-1 min-h-53 shadow-md h-fit max-h-71">
 			<header className="flex items-center gap-2">
-				<Calendar1 className="size-5" />
+				<Calendar1 className="text-primary size-5" />
 				<h3 className="text-primary font-medium text-base">Gastos del Mes</h3>
 			</header>
 			{data.length === 0 ? (

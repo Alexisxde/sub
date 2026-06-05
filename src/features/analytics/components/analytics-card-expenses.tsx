@@ -44,16 +44,16 @@ export default function AnalyticsCardExpenses({ month, year }: Props) {
 			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
 			className="flex flex-col bg-card rounded-4xl p-6 shadow-md min-h-64">
 			<header className="flex items-center gap-2 mb-3">
-				<DollarSign className="size-5" />
+				<DollarSign className="text-primary size-5" />
 				<h3 className="text-primary font-medium text-base">Últimos 6 meses</h3>
 			</header>
 			{!hasData ? (
 				<CardEmptyState />
 			) : (
 				<>
-					<p className="text-4xl font-semibold text-foreground flex items-baseline gap-0.5">
+					<p className="text-4xl font-semibold text-primary flex items-baseline gap-0.5">
 						${lastMonth.actual.toFixed(2)}
-						<span className="text-sm text-muted-foreground">/en {monthStringLong(month)}</span>
+						<span className="text-sm text-muted-foreground">en {monthStringLong(month)}</span>
 					</p>
 					<section className="w-full flex-1 mt-2">
 						<ResponsiveContainer width="100%" height="100%">

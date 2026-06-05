@@ -19,9 +19,9 @@ export default function AnalyticsCardCategory({ month, year }: Props) {
 			initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
 			animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
 			transition={{ duration: 0.3, delayChildren: 0.2, staggerChildren: 0.1 }}
-			className="rounded-4xl bg-card p-6 min-h-53 flex flex-col">
+			className="rounded-4xl bg-card p-6 min-h-53 shadow-md flex flex-col">
 			<header className="flex items-center gap-2 mb-2">
-				<Puzzle className="size-5" />
+				<Puzzle className="text-primary size-5" />
 				<h3 className="text-primary font-medium text-base">Categorías</h3>
 			</header>
 			{data.length === 0 ? (
@@ -56,17 +56,17 @@ export default function AnalyticsCardCategory({ month, year }: Props) {
 					<footer className="mt-2 flex flex-col gap-3">
 						{data.map((item, index) => {
 							return (
-								<div key={item.name} className="flex items-center gap-2.5">
+								<div key={item.name} className="text-muted-foreground flex items-center gap-2.5">
 									<span
 										className="size-2.5 rounded-full shrink-0"
 										style={{ backgroundColor: `var(--chart-${index + 1})` }}
 									/>
 									<div
-										className="[&_svg]:size-4 flex items-center justify-center"
+										className="text-muted-foreground [&_svg]:size-4 flex items-center justify-center"
 										dangerouslySetInnerHTML={{ __html: item.logo || "" }}
 									/>
-									<span className="flex-1 text-gray-300 text-[13px]">{item.name}</span>
-									<span className="text-gray-200 text-[13px] font-semibold tabular-nums border-r pr-4 border-border">
+									<span className="flex-1 text-muted-foreground text-[13px]">{item.name}</span>
+									<span className="text-primary text-[13px] font-medium tabular-nums border-r pr-4 border-border">
 										${item.amount}
 									</span>
 									<span className="text-muted-foreground text-[12px] tabular-nums w-7 text-right">{item.pct}</span>
