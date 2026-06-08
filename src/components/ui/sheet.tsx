@@ -53,8 +53,8 @@ export function Sheet({ children, open, onOpenChange, className }: SheetProps) {
 						)}>
 						<button
 							onClick={() => onOpenChange(false)}
-							className="absolute right-7 top-7 z-10 rounded-full p-2 bg-muted/50 hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-ring">
-							<X className="h-5 w-5" />
+							className="absolute right-7 top-7 z-10 rounded-full p-3 hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-ring">
+							<X className="size-4" />
 							<span className="sr-only">Cerrar</span>
 						</button>
 						<div className="flex-1 overflow-y-auto p-8 w-full">{children}</div>
