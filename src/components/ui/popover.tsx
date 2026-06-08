@@ -1,9 +1,8 @@
 "use client"
-import useClickOutside from "@/hooks/use-click-outside"
 import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
 import { AnimatePresence, MotionConfig, motion, type Transition, type Variants } from "motion/react"
-import { createContext, isValidElement, useContext, useEffect, useId, useRef, useState } from "react"
+import { createContext, isValidElement, useContext, useId, useState } from "react"
 import { createPortal } from "react-dom"
 import Button from "./button"
 
@@ -136,20 +135,6 @@ function PopoverContent({ children, className, ...props }: PopoverContentProps) 
 	const context = useContext(PopoverContext)
 	if (!context) throw new Error("PopoverContent must be used within Popover")
 
-	const ref = useRef<HTMLDivElement>(null!)
-	useClickOutside(ref, context.close, context.uniqueId)
-
-	useEffect(() => {
-		if (!context.isOpen) return
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "Escape") context.close()
-		}
-		document.addEventListener("keydown", handleKeyDown)
-		return () => document.removeEventListener("keydown", handleKeyDown)
-	}, [context.isOpen, context.close])
-
-	if (typeof document === "undefined") return null
-
 	return createPortal(
 		<AnimatePresence initial={false} mode="popLayout">
 			{context.isOpen && (
@@ -162,7 +147,6 @@ function PopoverContent({ children, className, ...props }: PopoverContentProps) 
 						exit={{ opacity: 0, transition: { duration: 0.2 } }}
 					/>
 					<motion.div
-						ref={ref}
 						layoutId={`popover-trigger-${context.uniqueId}`}
 						key={context.uniqueId}
 						id={`popover-content-${context.uniqueId}`}
