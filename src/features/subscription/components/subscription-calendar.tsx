@@ -1,18 +1,24 @@
 "use client"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { monthStringLong } from "@/utils/month-string"
 import { motion } from "motion/react"
 import { useMemo, useRef, useState } from "react"
 import { useSubscriptions } from "../hooks/use-subscriptions"
 import type { Subcription } from "../suscription"
 import { CalendarAnimation, CalendarItem } from "./calendar"
 import HeaderCalendar from "./header-calendar"
+import { SubscriptionDaySheet } from "./subscription-day-sheet"
 import { SubscriptionHoverCard } from "./subscription-hover-card"
 
 const DAYS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
 
 export default function SubscriptionCalendar() {
+	const isMobile = useIsMobile()
 	const [currentDate, setCurrentDate] = useState(new Date())
 	const [hoveredDay, setHoveredDay] = useState<number | null>(null)
+	const [selectedDay, setSelectedDay] = useState<number | null>(null)
+	const [isSheetOpen, setIsSheetOpen] = useState(false)
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 	const [isHoveringCard, setIsHoveringCard] = useState(false)
 	const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -157,7 +163,7 @@ export default function SubscriptionCalendar() {
 						<CalendarItem
 							key={key}
 							onMouseEnter={(e) => {
-								if (daySubscriptions.length > 0) {
+								if (daySubscriptions.length > 0 && !isMobile) {
 									if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
 									setHoveredDay(day)
 									handleMouseMove(e)
@@ -165,10 +171,17 @@ export default function SubscriptionCalendar() {
 							}}
 							onMouseLeave={handleDayLeave}
 							onMouseMove={handleMouseMove}
+							onClick={() => {
+								if (daySubscriptions.length > 0 && isMobile) {
+									setSelectedDay(day)
+									setIsSheetOpen(true)
+								}
+							}}
 							className={cn(
 								"rounded-full md:rounded-4xl relative flex flex-col p-4 bg-card transition-colors hover:bg-muted duration-200 ease-in-out h-full",
 								dayMonth !== "current" && "bg-muted/10 hover:bg-muted/10 text-muted-foreground/20",
-								hoveredDay === day && dayMonth === "current" && "z-10 bg-primary/10 hover:bg-primary/10"
+								hoveredDay === day && dayMonth === "current" && "z-10 bg-primary/10 hover:bg-primary/10",
+								isMobile && daySubscriptions.length > 0 && "cursor-pointer active:scale-95"
 							)}>
 							<span
 								className={cn(
@@ -208,6 +221,14 @@ export default function SubscriptionCalendar() {
 				subscriptions={hoveredDay ? subscriptionsByDay[hoveredDay] || [] : []}
 				onMouseEnter={handleCardEnter}
 				onMouseLeave={handleCardLeave}
+			/>
+			<SubscriptionDaySheet
+				open={isSheetOpen}
+				onOpenChange={setIsSheetOpen}
+				day={selectedDay ?? 0}
+				month={monthStringLong(month)}
+				year={year}
+				subscriptions={selectedDay ? subscriptionsByDay[selectedDay] || [] : []}
 			/>
 		</div>
 	)
