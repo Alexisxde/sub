@@ -17,7 +17,7 @@ export function AnalyticsDashboard() {
 	const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1))
 
 	return (
-		<section className="p-6 space-y-4">
+		<section className="pb-16 md:pb-6 p-6 space-y-4">
 			<AnalyticsHeader month={month} year={year} prevMonth={prevMonth} nextMonth={nextMonth} />
 			<main className="flex flex-col gap-3">
 				<section className="flex flex-col lg:flex-row gap-3">
