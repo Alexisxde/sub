@@ -2,6 +2,7 @@
 import Button from "@/components/ui/button"
 import Input from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@/components/ui/popover"
+import { toast } from "@/lib/sileo"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2Icon } from "lucide-react"
 import { motion } from "motion/react"
@@ -27,10 +28,11 @@ export default function SignInForm() {
 	const onSubmit: SubmitHandler<FormData> = async ({ email, password }) => {
 		try {
 			const res = await signIn("credentials", { email, password, redirect: false })
-			if (!res?.error) {
+			if (res?.error) {
 				setError("root", { message: "Correo o contraseña incorrectos." })
 				return
 			}
+			toast({ title: "¡Bienvenido de nuevo!", description: "Has iniciado sesión correctamente.", type: "success" })
 			router.push("/app")
 		} catch (_) {
 			setError("root", { message: "Ocurrió un error inesperado. Inténtalo de nuevo." })

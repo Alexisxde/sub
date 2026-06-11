@@ -8,6 +8,7 @@ import { motion } from "motion/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
+import { sileo } from "sileo"
 import type z from "zod"
 import { userRegisterSchema } from "../schemas/register"
 import { register } from "../services/auth"
@@ -27,6 +28,7 @@ export default function SignUpForm() {
 	const onSubmit: SubmitHandler<FormData> = async ({ name, email, password }) => {
 		try {
 			await register({ name, email, password })
+			sileo.success({ title: "Cuenta creada!", description: "Has creado tu cuenta correctamente." })
 			router.push("/app")
 		} catch (_) {
 			setError("root", { message: "Ocurrió un error inesperado. Inténtalo de nuevo." })
