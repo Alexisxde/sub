@@ -42,6 +42,7 @@
 			},
 			"correctness": { "useParseIntRadix": "off" },
 			"complexity": {
+				"noUselessFragments": "off",
 				"noBannedTypes": "off",
 				"noUselessLoneBlockStatements": "off",
 				"noAdjacentSpacesInRegex": "off"

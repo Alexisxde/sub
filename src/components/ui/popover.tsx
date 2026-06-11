@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
 import { AnimatePresence, MotionConfig, motion, type Transition, type Variants } from "motion/react"
-import { createContext, isValidElement, useContext, useId, useState } from "react"
+import { createContext, isValidElement, useContext, useEffect, useId, useState } from "react"
 import { createPortal } from "react-dom"
 import Button from "./button"
 
@@ -133,7 +133,14 @@ export type PopoverContentProps = {
 
 function PopoverContent({ children, className, ...props }: PopoverContentProps) {
 	const context = useContext(PopoverContext)
+	const [mounted, setMounted] = useState(false)
+
+	useEffect(() => {
+		setMounted(true)
+	}, [])
+
 	if (!context) throw new Error("PopoverContent must be used within Popover")
+	if (!mounted) return null
 
 	return createPortal(
 		<AnimatePresence initial={false} mode="popLayout">
